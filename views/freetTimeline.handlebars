@@ -1,0 +1,44 @@
+{{#if freets}}
+    {{#each freets}}
+      	<div class="alert alert-info">
+      	<a href="/users/profile/{{this.author}}"><strong>{{this.author}}</strong></a>
+      	{{#ifNE this.originalAuthor this.author}}
+      		Quoting: <a href="/users/profile/{{this.originalAuthor}}"><strong>{{this.originalAuthor}}</strong></a>
+      	{{/ifNE}}
+      	<br>
+      	"{{this.text}}"
+      	<br>
+      	{{this.timeStamp}}
+      	<br>
+      	{{#ifNE yourUser this.author}}
+	      	<form method="post" action="/freets/refreet">
+	      		<div class="form-group">
+		        	<label for="freetAuthor" class="sr-only">Username</label>
+			        <input id="freetAuthor" type="hidden" name="originalauthor" value={{this.originalAuthor}}></input>
+			    </div>
+			    <div class="form-group">
+		        	<label for="freetText" class="sr-only">Username</label>
+			        <input id="freetText" type="hidden" name="text" value={{this.text}}></input>
+			    </div>
+	      		<button class="btn btn-info" type="submit">refreet</button>
+	      	</form>
+      	{{/ifNE}}
+      	</div>
+    {{/each}}
+{{/if}}
+<div class="navbar navbar-default navbar-fixed-top row">
+  <div class="container-fluid" id="nav1">
+  <div class="container-fluid" id="subnav">
+    <ul class="nav navbar-nav navbar-right" id"navbar-list">
+      <li id="nav-button"><a href="/users/signout">SIGN OUT</a></li>
+      <li id="nav-button"><a href="/users/myprofile">PROFILE</a></li>
+      <li id="nav-button"><a href="/freets/postFreet">POST FREET</a></li>
+    </ul>
+  </div>
+  </div>
+</div>
+<footer class="footer">
+	<div class="container-fluid">
+		Currently logged in as {{yourUser}}
+	</div>
+</footer>

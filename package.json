@@ -1,0 +1,33 @@
+{
+  "name": "fritter2-egbuchp",
+  "version": "1.0.0",
+  "engines": {
+    "node": "6.6.0"
+  },
+  "description": "Project 4 - 6.170",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.mit.edu/6170-fa16/fritter2-egbuchp.git"
+  },
+  "author": "Patrick Egbuchulam",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.14.0",
+    "express-handlebars": "^3.0.0",
+    "express-session": "^1.14.1",
+    "express-validator": "^2.20.10",
+    "handlebars": "^4.0.5",
+    "mongodb": "^2.2.10",
+    "mongoose": "^4.6.4",
+    "passport": "^0.3.2",
+    "path": "^0.12.7",
+    "request": "^2.81.0"
+  },
+  "devDependencies": {}
+}

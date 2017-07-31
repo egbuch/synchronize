@@ -1,0 +1,35 @@
+<div class="container" id="registrationContainer">
+   <form method="post" action="/users/registration" class="form-registration">
+
+   {{#if errors}}
+        {{#each errors}}
+          <div class="alert alert-warning">{{this.msg}}</div>
+        {{/each}}
+    {{/if}}
+
+    <h2 class="form-registration-heading">Register for Fritter!</h2>
+    <div class="form-group">
+        <label for="inputUsername" class="sr-only">Username</label>
+        <input name="username" type="text" id="inputUsername" class="form-control" placeholder="Username" required autofocus>
+    </div>
+    <div class="form-group">
+        <label for="inputPassword1" class="sr-only">Password</label>
+        <input name="password1" type="text" id="inputPassword1" class="form-control" placeholder="Password" required autofocus>
+    </div>
+    <div class="form-group">
+        <label for="inputPassword2" class="sr-only">Username</label>
+        <input name="password2" type="text" id="inputPassword2" class="form-control" placeholder="Confirm Password" required autofocus>
+    </div>
+    <button class="btn btn-lg btn-primary btn-block" id="registrationButton" type="submit">Register</button>
+  </form>
+</div> 
+<div class="navbar navbar-default navbar-fixed-top row">
+  <div class="container-fluid" id="nav1">
+  <div class="container-fluid" id="subnav">
+    <ul class="nav navbar-nav navbar-right" id"navbar-list">
+      <li id="nav-button"><a href="/">HOME</a></li>
+      <li id="nav-button"><a href="/users/signin">SIGN IN</a></li>
+    </ul>
+  </div>
+  </div>
+</div>

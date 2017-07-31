@@ -1,0 +1,50 @@
+<div class="row">
+  <div class="col-lg-12" id="headerRow">
+
+    <section class="page-header">
+      <h1 id="welcome">
+      {{#if user}}
+        {{user}}'s profile
+      {{/if}}
+      </h1>
+      <form method="post" action="/users/profile/{{user}}/follow">
+        <div class="form-group">
+          <label for="followUser" class="sr-only">User</label>
+          <input id="followUser" type="hidden" name="user" value={{user}}></input>
+        </div>
+        <button class="btn btn-info" type="submit">Follow</button>
+      </form>
+      <form method="post" action="/users/profile/{{user}}/unfollow">
+        <div class="form-group">
+          <label for="unfollowUser" class="sr-only">User</label>
+          <input id="unfollowUser" type="hidden" name="user" value={{user}}></input>
+        </div>
+        <button class="btn btn-info" type="submit">Unfollow</button>
+      </form>
+    </section>    
+  </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        {{listening}}
+    </div>
+</div>
+
+<div class="navbar navbar-default navbar-fixed-top row">
+  <div class="container-fluid" id="nav1">
+  <div class="container-fluid" id="subnav">
+    <ul class="nav navbar-nav navbar-right" id"navbar-list">
+      <li id="nav-button"><a href="/users/signout">SIGN OUT</a></li>
+      <li id="nav-button"><a href="/users/myprofile">PROFILE</a></li>
+      <li id="nav-button"><a href="/freets/postFreet">POST FREET</a></li>
+      <li id="nav-button"><a href="/freets">TIMELINE</a></li>
+    </ul>
+  </div>
+  </div>
+</div>
+<footer class="footer">
+  <div class="container-fluid">
+    Currently logged in as {{yourUser}}
+  </div>
+</footer>

@@ -1,0 +1,72 @@
+body{
+	width: 100%;
+	margin-top: 40px;
+	padding-bottom: 20px;
+	background-color: black;
+}
+
+.footer{
+	position:fixed;
+    bottom:0;
+    width:100%;
+    height:20px;   /* Height of the footer */
+    background:gray;
+    color: white;
+	font-family: 'Lato', sans-serif;
+}
+
+h2{
+	text-align: center;
+	color: white;
+	font-family: 'Lato', sans-serif;
+}
+
+#signinContainer{
+	width: 25%;
+}
+
+#registerLink{
+	text-align: center;
+	margin: 0 auto;
+}
+
+#signinButton{
+	font-family: 'Lato', sans-serif;
+}
+
+#registrationContainer{
+	width: 25%;
+}
+
+#registrationButton{
+	font-family: 'Lato', sans-serif;
+}
+
+#contentBuffer{
+	height:200px;
+}
+
+#headerRow{
+	color: white;
+	height: 175px;
+	position: relative;
+	z-index: 1;
+	width: 100%;
+	border-bottom:0px solid #eeeeee;
+}
+
+.page-header{
+	border-bottom:0px solid #eeeeee;
+	text-align: center;
+}
+
+#welcome{
+	font-size: 40px;
+	font-family: 'Lato', sans-serif;
+}
+
+#slogan{
+	font-family: 'Lato', sans-serif;
+	color: white;
+}
+
