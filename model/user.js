@@ -5,15 +5,20 @@ var userSchema = mongoose.Schema({
 	username: String,
 	password: String,
 	signedIn: Boolean,
-	listening: String
+	listening: {
+		title: String,
+		artists: [String],
+		progressTime: String,
+		isPlaying: Boolean,
+		imageUrl: String
+	}
 });
 
-userSchema.statics.createUser = function(name, pass, callback){
+userSchema.statics.createUser = function(name, pass, listening, callback){
 	var newUser = UserModel({
 		username: name,
 		password: pass,
-		signedIn: false,
-		listening: ""
+		listening: listening
 	});
 	newUser.save(callback);
 };

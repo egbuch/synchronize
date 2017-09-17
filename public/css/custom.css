@@ -15,10 +15,22 @@ body{
 	font-family: 'Lato', sans-serif;
 }
 
-h2{
+.centered-text{
 	text-align: center;
+}
+
+h1, h2, h3, h4, h5 {
 	color: white;
 	font-family: 'Lato', sans-serif;
+}
+
+p {
+	color: white !important;
+}
+
+#listeningImage {
+	display: block;
+	margin: 0 auto;
 }
 
 #signinContainer{
@@ -48,7 +60,6 @@ h2{
 
 #headerRow{
 	color: white;
-	height: 175px;
 	position: relative;
 	z-index: 1;
 	width: 100%;
@@ -69,4 +80,3 @@ h2{
 	font-family: 'Lato', sans-serif;
 	color: white;
 }
-

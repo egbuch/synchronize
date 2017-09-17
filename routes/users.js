@@ -8,18 +8,12 @@ var request = require('request')
 
 var spotauth = require('./spotauth.js')
 
-var sess;
-var sessID;
-var currentAccess = spotauth.access
-var currentRefresh = spotauth.refresh
-
 router.get('/', function(req, res, next){
 	res.send('USERS!!');
 });
 
 router.get('/registration', function(req, res, next){
-	console.log(req.session.username);
-	if (sess === undefined){
+	if (req.session.username === undefined){
 		res.render('registration');
 	}else{
 		res.redirect('/spotauth/login');
@@ -63,7 +57,8 @@ router.post('/registration', function(req, res, next){
 	    	res.render('registration', { errors: errors });
 	    	return;
 	  	} else {
-			User.createUser(username.toLowerCase(), password1, function(err){
+			var emptyListening = { title: "", artists: [], progressTime: "", isPlaying: false, imageUrl: "" }
+			User.createUser(username.toLowerCase(), password1, emptyListening, function(err) {
 				if (err){
 					console.log(err);
 				};
@@ -75,8 +70,7 @@ router.post('/registration', function(req, res, next){
 
 
 router.get('/signin', function(req, res, next){
-	console.log(req.session.username);
-	console.log(sess)
+	console.log("Entering Sign-in Page")
 	if(req.session.username === undefined){
 		res.render('signin');
 	}else{
@@ -85,11 +79,13 @@ router.get('/signin', function(req, res, next){
 });
 
 router.post('/signin', function(req, res, next){
-	if (sess === undefined){
+	console.log("Attempting to sign in ...")
+	if (req.session.username === undefined){
 		var username = req.body.username;
 		var password = req.body.password;
 
 		User.findOne({'username':username.toLowerCase()}, function(err, user){
+			console.log("...")
 			if (err){
 				console.log(err);
 			};
@@ -106,12 +102,12 @@ router.post('/signin', function(req, res, next){
 		    	res.render('signin', { errors: errors });
 		    	return;
 		  	} else {
-		  		sess = req.session;
-			    sess.username =  username;
-			    sessID = user._id;
-			    var user_string = encodeURIComponent(sess.username);
-
-				User.update({'username':req.session.username.toLowerCase()}, {signedIn:true}, function(err){
+				console.log("Sign-in successful!")
+			    var user_string = encodeURIComponent(username);
+				req.session.username = username
+				req.session.password = password
+				User.update({'username':username.toLowerCase()}, {signedIn:true}, function(err){
+					console.log("should be going to spotauth")
 					res.redirect('/spotauth/login');
 				});
 		  	};
@@ -120,15 +116,12 @@ router.post('/signin', function(req, res, next){
 });
 
 router.get('/signout', function(req, res, next){
-	if(sess !== undefined){
+	if(req.session !== undefined){
 		var username = req.session.username
 		req.session.destroy(function(err){
 			if (err){
 				console.log(err);
 			};
-			sess.username = undefined;
-			sess = undefined;
-			sessID = undefined;
 
 			User.update({'username':req.session.username.toLowerCase()}, {signedIn:false}, function(err){
 				res.redirect('/');
@@ -140,29 +133,36 @@ router.get('/signout', function(req, res, next){
 });
 
 router.get('/myprofile', function(req, res, next){
+	console.log("Going to your profile...");
 	if (req.session.username === undefined){
 		res.render('signin');
 	}else{
-		if (currentAccess !== undefined){
+		console.log("...");
+		if (req.session.currentAccess !== undefined){
 			var options = {
 	            url: 'https://api.spotify.com/v1/me/player/currently-playing',
-	            headers: { 'Authorization': 'Bearer ' + currentAccess },
+	            headers: { 'Authorization': 'Bearer ' + req.session.currentAccess },
 	        	json: true
 	        };
 
 	        // use the access token to access the Spotify Web API
 	        request.get(options, function(error, response, body) {
-				console.log("this is the body")
-	        	console.log(body);
-				console.log("this is the currentAccess")
-				console.log(currentAccess)
-				User.update({username:req.session.username.toLowerCase()}, {listening:body.toString()})
+				var listeningState = {
+					title: body.item.name,
+					artists: body.item.artists.map(function(artist){
+						return artist.name
+					}),
+					progressTime: body.progress_ms,
+					isPlaying: body.is_playing,
+					imageUrl: body.item.album.images[0]
+				};
+
+				console.log(listeningState);
+				User.update({username:req.session.username.toLowerCase()}, {listening:listeningState}, function(err, user){
+					res.render('myprofile', {yourUser: req.session.username, user: req.session.username, listening:listeningState});
+				})
 	        });
 		}
-
-		User.findOne({username:req.session.username.toLowerCase()}, function(err, user){
-			res.render('myprofile', {yourUser: req.session.username, user: sess.username, listening:user.listening});
-		})
 	}
 });
 
@@ -177,7 +177,7 @@ router.get('/profile/:user', function(req, res, next){
 			res.redirect('/users/myprofile');
 		}else{
 			User.findOne({username:req.session.username.toLowerCase()}, function(err, user){
-				res.render('profile', {yourUser: req.session.username, user: sess.username, listening:user.listening});
+				res.render('profile', {yourUser: req.session.username, user: req.session.username, listening:user.listening});
 			})
 		};
 	};
