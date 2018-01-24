@@ -52,21 +52,23 @@ io.on("connection", function(socket) {
 
 		// use the access token to access the Spotify Web API
 		request.get(options, function(error, response, body) {
-			var listeningState = {
-				title: body.item.name,
-				artists: body.item.artists.map(function(artist){
-					return artist.name
-				}),
-				progressTime: body.progress_ms,
-				isPlaying: body.is_playing,
-				imageUrl: body.item.album.images[0]
-			};
+			if (body !== undefined) {
+				var listeningState = {
+					title: body.item.name,
+					artists: body.item.artists.map(function(artist){
+						return artist.name
+					}),
+					progressTime: body.progress_ms,
+					isPlaying: body.is_playing,
+					imageUrl: body.item.album.images[0]
+				};
 
-			User.update({username:sess.username.toLowerCase()}, {listening:listeningState}, function(err){
-				socket.emit("update-listening", listeningState);
+				User.update({username:sess.username.toLowerCase()}, {listening:listeningState}, function(err){
+					socket.emit("update-listening", listeningState);
 
-				setTimeout(function() { update_listening(timeout) }, timeout);
-			});
+					setTimeout(function() { update_listening(timeout) }, timeout);
+				});
+			}
 		});
 	};
 
